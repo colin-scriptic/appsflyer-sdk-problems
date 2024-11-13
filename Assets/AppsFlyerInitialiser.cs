@@ -1,3 +1,4 @@
+using System;
 using AppsFlyerConnector;
 using AppsFlyerSDK;
 using UnityEngine;
@@ -5,10 +6,32 @@ using UnityEngine.Assertions;
 
 public class AppsFlyerInitialiser : MonoBehaviour, IAppsFlyerPurchaseValidation
 {
-        [SerializeField]
-        private string AndroidAppKey = "";
+        [SerializeField] private string AndroidAppKey = "";
+
+        [SerializeField] private int FramesToWait = 30;
+
+        private int _waitedFramesUntilInitialise = 0;
+        private bool _initialised = false;
         
-        private void Awake()
+        private void Update()
+        {
+                if (!_initialised)
+                {
+                        Debug.Log("Waiting...");
+                        if (_waitedFramesUntilInitialise < FramesToWait)
+                        {
+                                _waitedFramesUntilInitialise++;
+                        }
+                        else
+                        {
+                                Debug.Log("Initialising...");
+                                _initialised = true;
+                                Initialise();
+                        }
+                }
+        }
+
+        private void Initialise()
         {
 #if UNITY_EDITOR
                 Debug.Log("Editor not supported");
