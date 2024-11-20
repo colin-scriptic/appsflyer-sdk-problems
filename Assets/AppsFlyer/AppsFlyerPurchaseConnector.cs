@@ -6,7 +6,7 @@ using System;
 namespace AppsFlyerConnector
 {
     
-    public class AppsFlyerPurchaseConnector : MonoBehaviour {
+    public class AppsFlyerPurchaseConnector {
 
         public static readonly string kAppsFlyerPurchaseConnectorVersion = "2.0.4";
 

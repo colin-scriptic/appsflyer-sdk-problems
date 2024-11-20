@@ -44,10 +44,9 @@ public class AppsFlyerInitialiser : MonoBehaviour, IAppsFlyerPurchaseValidation
         #if UNITY_ANDROID
                 Debug.Log("Initialising SDK");
                 AppsFlyer.initSDK(AndroidAppKey, "", this);
-                Assert.IsNotNull(AppsFlyer.instance);
-                Assert.IsTrue(AppsFlyer.instance.isInit);
-                Assert.IsNotNull(FindObjectOfType<AppsFlyerPurchaseConnector>());
-                Debug.Log("SDK is definitely initialised and AppsFlyerPurchaseConnector exists");
+                Assert.IsNotNull(AppsFlyer.instance, "No AppsFlyer instance");
+                Assert.IsTrue(AppsFlyer.instance.isInit, "AppsFlyer instance not initialised");
+                Debug.Log("SDK is definitely initialised");
         #else
                 Debug.LogError("Unsupported platform");
                 return;
@@ -56,11 +55,16 @@ public class AppsFlyerInitialiser : MonoBehaviour, IAppsFlyerPurchaseValidation
                 AppsFlyerPurchaseConnector.init(this, AppsFlyerConnector.Store.GOOGLE);
                 Debug.Log("Initialised AppsFlyerPurchaseConnector");
 #if DEBUG
+                Debug.Log("Set isSandbox to true");
                 AppsFlyerPurchaseConnector.setIsSandbox(true);
 #endif
-                AppsFlyerPurchaseConnector.setAutoLogPurchaseRevenue(AppsFlyerAutoLogPurchaseRevenueOptions.AppsFlyerAutoLogPurchaseRevenueOptionsInAppPurchases);
+                Debug.Log("Set autoLogPurchaseRevenue");
+                AppsFlyerPurchaseConnector.setAutoLogPurchaseRevenue(AppsFlyerAutoLogPurchaseRevenueOptions.AppsFlyerAutoLogPurchaseRevenueOptionsInAppPurchases);                Debug.Log("Set autoLogPurchaseRevenue");
+                Debug.Log("Set setPurchaseRevenueValidationListeners");
                 AppsFlyerPurchaseConnector.setPurchaseRevenueValidationListeners(true);
+                Debug.Log("Build");
                 AppsFlyerPurchaseConnector.build();
+                Debug.Log("Start observing");
                 AppsFlyerPurchaseConnector.startObservingTransactions();
                 
                 AppsFlyer.startSDK();
